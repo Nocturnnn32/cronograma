@@ -1,0 +1,2092 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Control de Mantenimientos | Aduana</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --navy:#142f43;
+  --navy2:#1d4057;
+  --blue:#3978c6;
+  --blue-light:#edf4ff;
+  --teal:#149eaa;
+  --teal-light:#e7f6f6;
+  --bg:#f3f6f9;
+  --white:#fff;
+  --text:#253c4d;
+  --muted:#81919c;
+  --line:#e7edf1;
+  --green:#24966c;
+  --shadow:0 5px 20px rgba(20,47,67,.045);
+}
+
+* {
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body {
+  background:var(--bg);
+  color:var(--text);
+  font-family:'DM Sans',sans-serif;
+}
+
+button,select {
+  font-family:inherit;
+}
+
+.app {
+  min-height:100vh;
+  display:flex;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+  width:250px;
+  background:var(--navy);
+  color:white;
+  position:fixed;
+  top:0;
+  bottom:0;
+  left:0;
+  padding:26px 17px;
+  display:flex;
+  flex-direction:column;
+  z-index:10;
+}
+
+.brand {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:5px 7px 38px;
+}
+
+.brand-icon {
+  width:43px;
+  height:43px;
+  background:var(--teal);
+  border-radius:12px;
+  display:grid;
+  place-items:center;
+  font-weight:800;
+  font-size:15px;
+}
+
+.brand-name {
+  font-family:Manrope,sans-serif;
+  font-size:11px;
+  font-weight:800;
+  line-height:1.5;
+  letter-spacing:.5px;
+}
+
+.brand-name small {
+  display:block;
+  color:#9ab1bf;
+  font-size:8px;
+  letter-spacing:1px;
+  margin-top:3px;
+}
+
+.menu-label {
+  font-size:9px;
+  color:#809aaa;
+  font-weight:800;
+  letter-spacing:1.3px;
+  padding:0 12px 12px;
+}
+
+.nav-btn {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  width:100%;
+  border:0;
+  background:transparent;
+  color:#b8c9d3;
+  padding:13px;
+  border-radius:9px;
+  cursor:pointer;
+  text-align:left;
+  font-size:12px;
+  font-weight:600;
+  margin-bottom:4px;
+}
+
+.nav-btn .ico {
+  width:22px;
+  text-align:center;
+  font-size:18px;
+}
+
+.nav-btn:hover,
+.nav-btn.active {
+  background:#24485f;
+  color:white;
+}
+
+.sidebar-status {
+  margin-top:30px;
+  border:1px solid #345468;
+  border-radius:10px;
+  padding:13px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-size:10px;
+}
+
+.sidebar-status small {
+  display:block;
+  color:#a1b6c2;
+  margin-top:4px;
+}
+
+.dot-live {
+  width:8px;
+  height:8px;
+  background:#39c58c;
+  border-radius:50%;
+  box-shadow:0 0 0 4px #39c58c20;
+  flex-shrink:0;
+}
+
+.sidebar-footer {
+  margin-top:auto;
+  color:#a9bdc8;
+  font-size:10px;
+  line-height:1.8;
+  padding:10px;
+}
+
+/* MAIN */
+
+.main {
+  margin-left:250px;
+  width:calc(100% - 250px);
+  padding:27px 40px;
+  max-width:1650px;
+}
+
+.topbar {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid var(--line);
+  padding-bottom:22px;
+}
+
+.eyebrow {
+  font-size:9px;
+  font-weight:800;
+  color:#8a9ba6;
+  letter-spacing:1.4px;
+}
+
+.topbar h1 {
+  font:800 22px Manrope;
+  color:var(--navy);
+  margin-top:5px;
+}
+
+.top-right {
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+
+.clock {
+  text-align:right;
+  font:800 15px Manrope;
+  color:var(--navy);
+}
+
+.clock small {
+  display:block;
+  font:700 8px 'DM Sans';
+  color:var(--muted);
+  letter-spacing:1px;
+  margin-top:4px;
+}
+
+.avatar {
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  background:#dff0f1;
+  color:#16838b;
+  display:grid;
+  place-items:center;
+  font-weight:800;
+  font-size:11px;
+}
+
+/* WELCOME */
+
+.welcome {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin:27px 0 17px;
+}
+
+.welcome h2 {
+  font:800 24px Manrope;
+  color:var(--navy);
+  margin:5px 0;
+}
+
+.welcome p {
+  color:var(--muted);
+  font-size:11px;
+}
+
+.today-badge {
+  background:#e5f4f4;
+  border:1px solid #d0eaea;
+  color:#16828a;
+  padding:9px 13px;
+  border-radius:9px;
+  font-size:11px;
+  font-weight:800;
+}
+
+/* DATE BANNER */
+
+.date-banner {
+  background:linear-gradient(110deg,#142f43,#205568);
+  color:white;
+  padding:19px 23px;
+  border-radius:13px;
+  display:flex;
+  align-items:center;
+  gap:15px;
+  box-shadow:var(--shadow);
+}
+
+.date-icon {
+  width:45px;
+  height:45px;
+  background:#ffffff20;
+  border-radius:11px;
+  display:grid;
+  place-items:center;
+  font-size:23px;
+}
+
+.date-info span {
+  display:block;
+  font-size:9px;
+  color:#a8cbd0;
+  font-weight:800;
+  letter-spacing:1.1px;
+}
+
+.date-info strong {
+  display:block;
+  font:800 20px Manrope;
+  margin:3px 0;
+}
+
+.date-info small {
+  color:#d0e2e5;
+  font-size:10px;
+}
+
+.date-zone {
+  margin-left:auto;
+  font-size:10px;
+  color:#d5e7e9;
+}
+
+/* CALENDAR */
+
+.calendar-panel {
+  background:white;
+  border:1px solid var(--line);
+  border-radius:15px;
+  padding:22px;
+  margin:18px 0 23px;
+  box-shadow:var(--shadow);
+}
+
+.calendar-header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:15px;
+  margin-bottom:20px;
+}
+
+.calendar-header h3 {
+  font:800 19px Manrope;
+  color:var(--navy);
+  margin:5px 0;
+  text-transform:capitalize;
+}
+
+.calendar-header p {
+  color:var(--muted);
+  font-size:10px;
+}
+
+.calendar-controls {
+  display:flex;
+  gap:6px;
+}
+
+.calendar-controls button {
+  height:35px;
+  min-width:35px;
+  padding:0 10px;
+  background:#f6f9fa;
+  border:1px solid var(--line);
+  color:#405b6c;
+  border-radius:8px;
+  cursor:pointer;
+  font-weight:700;
+  font-size:12px;
+}
+
+.calendar-controls button:hover {
+  background:var(--teal-light);
+  color:var(--teal);
+  border-color:#b9dfe1;
+}
+
+.calendar-weekdays,
+.calendar-grid {
+  display:grid;
+  grid-template-columns:repeat(7,minmax(0,1fr));
+  gap:7px;
+}
+
+.calendar-weekdays {
+  margin-bottom:8px;
+}
+
+.calendar-weekdays div {
+  text-align:center;
+  color:#8b9aa4;
+  font-size:9px;
+  font-weight:800;
+  letter-spacing:1px;
+  padding:8px 0;
+}
+
+.calendar-day {
+  appearance:none;
+  min-width:0;
+  min-height:65px;
+  border:1px solid #edf1f4;
+  border-radius:10px;
+  background:#fafcfd;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  cursor:pointer;
+  color:var(--text);
+  font-size:13px;
+  font-weight:600;
+  position:relative;
+  transition:.15s;
+}
+
+.calendar-day:hover {
+  background:#eef8f8;
+  border-color:#a8d9dc;
+  transform:translateY(-1px);
+}
+
+.calendar-day.outside {
+  background:white;
+  border-color:transparent;
+  color:#c3cdd3;
+}
+
+.calendar-day.today {
+  background:#e8f6f6;
+  border:1px solid var(--teal);
+  color:#087e87;
+  font-weight:800;
+}
+
+.calendar-day.selected {
+  background:var(--navy);
+  border-color:var(--navy);
+  color:white;
+  box-shadow:0 4px 10px #142f4325;
+}
+
+.calendar-day .day-number {
+  line-height:1;
+}
+
+.calendar-day.today .day-number {
+  font-weight:800;
+}
+
+.day-dots {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
+  min-height:7px;
+}
+
+.day-dots i {
+  width:7px;
+  height:7px;
+  display:block;
+  border-radius:50%;
+  background:var(--blue);
+}
+
+.day-dots i.video {
+  background:var(--teal);
+}
+
+.calendar-day.selected .day-dots i {
+  box-shadow:0 0 0 1px white;
+}
+
+.today-mark {
+  position:absolute;
+  right:7px;
+  top:7px;
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:var(--teal);
+}
+
+.calendar-day.selected .today-mark {
+  background:white;
+}
+
+.calendar-legend {
+  display:flex;
+  gap:20px;
+  flex-wrap:wrap;
+  align-items:center;
+  padding:14px 0 12px;
+  margin-top:14px;
+  border-top:1px solid var(--line);
+}
+
+.legend-item {
+  display:flex;
+  align-items:center;
+  gap:7px;
+  font-size:9px;
+  color:#738591;
+}
+
+.legend-dot {
+  width:8px;
+  height:8px;
+  border-radius:50%;
+}
+
+.legend-dot.energy {background:var(--blue)}
+.legend-dot.video {background:var(--teal)}
+.legend-dot.both {
+  background:linear-gradient(90deg,var(--blue) 50%,var(--teal) 50%);
+}
+
+.selected-info {
+  background:#f5f8fa;
+  border:1px solid #edf1f4;
+  border-radius:10px;
+  padding:13px 15px;
+}
+
+.selected-info h4 {
+  font:800 11px Manrope;
+  color:var(--navy);
+  margin-bottom:9px;
+  text-transform:capitalize;
+}
+
+.selected-events {
+  display:flex;
+  flex-wrap:wrap;
+  gap:7px;
+}
+
+.selected-event {
+  padding:7px 10px;
+  border-radius:7px;
+  font-size:9px;
+  font-weight:700;
+  line-height:1.5;
+  background:var(--blue-light);
+  color:var(--blue);
+}
+
+.selected-event.video {
+  background:var(--teal-light);
+  color:#12858e;
+}
+
+.selected-empty {
+  color:var(--muted);
+  font-size:10px;
+}
+
+/* STATS */
+
+.stats {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:12px;
+  margin:20px 0 29px;
+}
+
+.stat {
+  background:white;
+  border:1px solid var(--line);
+  border-radius:11px;
+  padding:15px;
+}
+
+.stat-title {
+  color:#758793;
+  font-size:10px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.stat-icon {
+  width:27px;
+  height:27px;
+  background:#f0f4f7;
+  border-radius:8px;
+  display:grid;
+  place-items:center;
+  font-size:15px;
+}
+
+.stat strong {
+  display:block;
+  font:800 26px Manrope;
+  color:var(--navy);
+  margin:8px 0 2px;
+}
+
+.stat small {
+  color:#91a0aa;
+  font-size:9px;
+}
+
+.stat.energy .stat-icon {
+  color:var(--blue);
+  background:var(--blue-light);
+}
+
+.stat.video .stat-icon {
+  color:var(--teal);
+  background:var(--teal-light);
+}
+
+/* ACTIVITIES */
+
+.section-title {
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  margin-bottom:13px;
+}
+
+.section-title h3 {
+  font:800 17px Manrope;
+  color:var(--navy);
+  margin-top:5px;
+}
+
+.section-title button {
+  border:0;
+  background:transparent;
+  color:var(--teal);
+  font-size:10px;
+  font-weight:800;
+  cursor:pointer;
+}
+
+.activities {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:12px;
+}
+
+.activity {
+  background:white;
+  border:1px solid var(--line);
+  border-radius:11px;
+  padding:17px;
+  position:relative;
+  overflow:hidden;
+}
+
+.activity::before {
+  content:'';
+  position:absolute;
+  width:4px;
+  top:0;
+  bottom:0;
+  left:0;
+  background:var(--blue);
+}
+
+.activity.video::before {
+  background:var(--teal);
+}
+
+.activity h4 {
+  font:700 13px Manrope;
+  line-height:1.5;
+  color:var(--navy);
+}
+
+.tag {
+  display:inline-block;
+  border-radius:20px;
+  padding:6px 9px;
+  font-size:9px;
+  font-weight:800;
+  margin-top:9px;
+}
+
+.tag.energy {
+  background:var(--blue-light);
+  color:var(--blue);
+}
+
+.tag.video {
+  background:var(--teal-light);
+  color:var(--teal);
+}
+
+.activity p {
+  font-size:10px;
+  line-height:1.6;
+  color:#83929c;
+  margin:10px 0;
+}
+
+.activity-footer {
+  padding-top:10px;
+  border-top:1px solid var(--line);
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  font-size:9px;
+  color:#84949e;
+}
+
+.activity-footer strong {
+  color:#425d6d;
+}
+
+.empty {
+  background:white;
+  border:1px dashed #d8e3e9;
+  border-radius:11px;
+  padding:28px;
+  text-align:center;
+  color:#84949e;
+  font-size:11px;
+  grid-column:1/-1;
+}
+
+.upcoming {
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.upcoming-item {
+  background:white;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:13px;
+}
+
+.upcoming-item strong {
+  display:block;
+  color:var(--navy);
+  font-size:10px;
+  margin:7px 0;
+  line-height:1.5;
+}
+
+.upcoming-item small {
+  color:#8999a3;
+  font-size:9px;
+}
+
+.upcoming-date {
+  color:var(--teal);
+  font:800 11px Manrope;
+}
+
+/* TABLES */
+
+.schedule-intro {
+  display:flex;
+  justify-content:space-between;
+  align-items:end;
+  margin:27px 0 18px;
+}
+
+.schedule-intro h2 {
+  font:800 22px Manrope;
+  color:var(--navy);
+  margin:6px 0;
+}
+
+.schedule-intro p {
+  font-size:11px;
+  color:var(--muted);
+}
+
+.schedule-intro select {
+  padding:10px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:white;
+  color:var(--text);
+  font-size:10px;
+}
+
+.schedule-block {
+  background:white;
+  border:1px solid var(--line);
+  border-radius:12px;
+  margin-bottom:17px;
+  overflow:hidden;
+}
+
+.schedule-heading {
+  padding:16px 18px;
+  border-bottom:1px solid var(--line);
+  border-left:4px solid var(--blue);
+}
+
+.schedule-block.video-block .schedule-heading {
+  border-left-color:var(--teal);
+}
+
+.schedule-heading h3 {
+  font:800 13px Manrope;
+  color:var(--navy);
+}
+
+.schedule-heading small {
+  display:block;
+  color:var(--muted);
+  font-size:9px;
+  margin-top:5px;
+}
+
+.table-scroll {
+  overflow-x:auto;
+}
+
+table {
+  border-collapse:collapse;
+  width:100%;
+  min-width:650px;
+}
+
+th {
+  text-align:left;
+  padding:12px 15px;
+  background:#f6f9fa;
+  color:#80909a;
+  font-size:9px;
+  letter-spacing:.5px;
+}
+
+td {
+  padding:12px 15px;
+  border-top:1px solid #edf1f4;
+  font-size:10px;
+  color:#536a78;
+}
+
+td:first-child {
+  font-weight:600;
+  color:#294354;
+}
+
+.status {
+  display:inline-block;
+  padding:5px 8px;
+  background:#f0f3f5;
+  color:#81919a;
+  border-radius:20px;
+  font-size:9px;
+  white-space:nowrap;
+}
+
+.status.today {
+  background:#e4f5ed;
+  color:var(--green);
+}
+
+footer {
+  margin-top:35px;
+  padding-top:15px;
+  border-top:1px solid var(--line);
+  color:#9aa8b1;
+  font-size:9px;
+  line-height:1.7;
+}
+
+.hidden {display:none!important}
+
+/* RESPONSIVE */
+
+@media(max-width:1050px) {
+  .main {
+    padding:25px;
+  }
+  .stats {
+    grid-template-columns:repeat(2,1fr);
+  }
+}
+
+@media(max-width:700px) {
+  .sidebar {
+    width:62px;
+    padding:18px 7px;
+  }
+
+  .brand {
+    padding:0 2px 30px;
+  }
+
+  .brand-icon {
+    width:44px;
+    height:44px;
+    flex-shrink:0;
+  }
+
+  .brand-name,
+  .menu-label,
+  .nav-btn:not(.active) {
+    display:none;
+  }
+
+  .nav-btn {
+    padding:13px 10px;
+    justify-content:center;
+    font-size:0;
+  }
+
+  .nav-btn .ico {
+    font-size:19px;
+  }
+
+  .sidebar-status {
+    justify-content:center;
+    padding:10px 5px;
+  }
+
+  .sidebar-status div,
+  .sidebar-footer {
+    display:none;
+  }
+
+  .main {
+    margin-left:62px;
+    width:calc(100% - 62px);
+    padding:17px 12px;
+  }
+
+  .topbar {
+    padding-bottom:15px;
+  }
+
+  .topbar h1 {
+    font-size:15px;
+  }
+
+  .topbar .eyebrow {
+    font-size:7px;
+  }
+
+  .clock {
+    font-size:12px;
+  }
+
+  .avatar {
+    display:none;
+  }
+
+  .welcome {
+    align-items:flex-start;
+    margin:20px 0 14px;
+  }
+
+  .welcome h2 {
+    font-size:18px;
+  }
+
+  .welcome p {
+    font-size:9px;
+    line-height:1.5;
+  }
+
+  .today-badge {
+    font-size:9px;
+    padding:8px;
+  }
+
+  .date-banner {
+    padding:14px;
+    gap:10px;
+  }
+
+  .date-icon {
+    width:37px;
+    height:37px;
+    font-size:19px;
+  }
+
+  .date-info strong {
+    font-size:15px;
+  }
+
+  .date-zone {
+    font-size:0;
+  }
+
+  .date-zone .dot-live {
+    display:inline-block;
+  }
+
+  .calendar-panel {
+    padding:14px 10px;
+    border-radius:12px;
+    margin:13px 0 17px;
+  }
+
+  .calendar-header {
+    align-items:flex-start;
+    gap:6px;
+    margin-bottom:12px;
+  }
+
+  .calendar-header h3 {
+    font-size:15px;
+  }
+
+  .calendar-header p {
+    font-size:8px;
+    line-height:1.5;
+    max-width:155px;
+  }
+
+  .calendar-controls {
+    gap:3px;
+  }
+
+  .calendar-controls button {
+    height:30px;
+    min-width:28px;
+    padding:0 6px;
+    font-size:10px;
+  }
+
+  .calendar-weekdays,
+  .calendar-grid {
+    gap:4px;
+  }
+
+  .calendar-weekdays div {
+    font-size:7px;
+    padding:6px 0;
+  }
+
+  .calendar-day {
+    min-height:44px;
+    border-radius:7px;
+    gap:6px;
+    font-size:11px;
+    padding:5px 1px;
+  }
+
+  .day-dots {
+    gap:3px;
+  }
+
+  .day-dots i {
+    width:5px;
+    height:5px;
+  }
+
+  .calendar-legend {
+    gap:9px;
+    padding:10px 0;
+    margin-top:9px;
+  }
+
+  .legend-item {
+    font-size:8px;
+    gap:5px;
+  }
+
+  .legend-dot {
+    width:6px;
+    height:6px;
+  }
+
+  .selected-info {
+    padding:10px;
+  }
+
+  .selected-info h4 {
+    font-size:10px;
+  }
+
+  .selected-event {
+    font-size:8px;
+  }
+
+  .stats {
+    gap:7px;
+    margin:12px 0 23px;
+  }
+
+  .stat {
+    padding:11px;
+  }
+
+  .stat-title {
+    font-size:9px;
+  }
+
+  .stat strong {
+    font-size:21px;
+  }
+
+  .stat small {
+    font-size:8px;
+  }
+
+  .activities {
+    grid-template-columns:1fr;
+  }
+
+  .activity {
+    padding:14px;
+  }
+
+  .activity h4 {
+    font-size:12px;
+  }
+
+  .upcoming {
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .section-title h3 {
+    font-size:14px;
+  }
+
+  .schedule-intro {
+    display:block;
+  }
+
+  .schedule-intro h2 {
+    font-size:18px;
+  }
+
+  .schedule-intro select {
+    width:100%;
+    margin-top:12px;
+  }
+}
+
+@media(max-width:370px) {
+  .calendar-day {
+    min-height:39px;
+  }
+
+  .calendar-header h3 {
+    font-size:13px;
+  }
+
+  .calendar-controls button {
+    min-width:25px;
+  }
+
+  .upcoming {
+    grid-template-columns:1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<!-- SIDEBAR -->
+
+<aside class="sidebar">
+
+  <div class="brand">
+    <div class="brand-icon">AM</div>
+    <div class="brand-name">
+      CONTROL DE<br>MANTENIMIENTOS
+      <small>GERENCIA REGIONAL LA PAZ</small>
+    </div>
+  </div>
+
+  <div class="menu-label">MENÚ PRINCIPAL</div>
+
+  <button class="nav-btn active" data-view="home">
+    <span class="ico">▦</span> Panel de hoy
+  </button>
+
+  <button class="nav-btn" data-view="schedules">
+    <span class="ico">▤</span> Cronogramas
+  </button>
+
+  <div class="sidebar-status">
+    <span class="dot-live"></span>
+    <div>
+      <strong>Seguimiento activo</strong>
+      <small>Horario de Bolivia</small>
+    </div>
+  </div>
+
+  <div class="sidebar-footer">
+    Sistema de seguimiento<br>
+    Gestión 2026<br>
+    La Paz, Bolivia
+  </div>
+
+</aside>
+
+<!-- MAIN -->
+
+<main class="main">
+
+  <header class="topbar">
+    <div>
+      <div class="eyebrow">SERVICIOS ESPECIALIZADOS · ADUANA</div>
+      <h1 id="pageTitle">Panel de mantenimientos</h1>
+    </div>
+
+    <div class="top-right">
+      <div class="clock">
+        <span class="dot-live"></span>
+        <span id="clock">00:00:00</span>
+        <small>HORA DE BOLIVIA</small>
+      </div>
+      <div class="avatar">AM</div>
+    </div>
+  </header>
+
+  <!-- PANEL PRINCIPAL -->
+
+  <section id="homeView">
+
+    <div class="welcome">
+      <div>
+        <div class="eyebrow">CONTROL Y PLANIFICACIÓN</div>
+        <h2>Agenda de trabajo</h2>
+        <p>Consulta los mantenimientos programados para cada fecha.</p>
+      </div>
+      <div class="today-badge">HOY · <span id="todayShort">--/--/----</span></div>
+    </div>
+
+    <div class="date-banner">
+      <div class="date-icon">▣</div>
+      <div class="date-info">
+        <span>FECHA ACTUAL · LA PAZ, BOLIVIA</span>
+        <strong id="dateHeading">--</strong>
+        <small id="weekday">--</small>
+      </div>
+      <div class="date-zone">
+        <span class="dot-live"></span>
+        America/La_Paz
+      </div>
+    </div>
+
+    <!-- CALENDARIO -->
+
+    <section class="calendar-panel">
+
+      <div class="calendar-header">
+        <div>
+          <div class="eyebrow">CALENDARIO DE MANTENIMIENTOS</div>
+          <h3 id="calendarMonth">Noviembre 2026</h3>
+          <p>Selecciona cualquier día para consultar las actividades.</p>
+        </div>
+
+        <div class="calendar-controls">
+          <button id="prevMonth" title="Mes anterior">‹</button>
+          <button id="todayMonth">Hoy</button>
+          <button id="nextMonth" title="Mes siguiente">›</button>
+        </div>
+      </div>
+
+      <div class="calendar-weekdays">
+        <div>LUN</div>
+        <div>MAR</div>
+        <div>MIÉ</div>
+        <div>JUE</div>
+        <div>VIE</div>
+        <div>SÁB</div>
+        <div>DOM</div>
+      </div>
+
+      <div class="calendar-grid" id="calendarGrid"></div>
+
+      <div class="calendar-legend">
+        <div class="legend-item">
+          <span class="legend-dot energy"></span>
+          Energía eléctrica
+        </div>
+
+        <div class="legend-item">
+          <span class="legend-dot video"></span>
+          Videovigilancia
+        </div>
+
+        <div class="legend-item">
+          <span class="legend-dot both"></span>
+          Ambos mantenimientos
+        </div>
+      </div>
+
+      <div class="selected-info" id="selectedInfo"></div>
+
+    </section>
+
+    <!-- ESTADÍSTICAS -->
+
+    <div class="stats">
+
+      <div class="stat">
+        <div class="stat-title">
+          Actividades de hoy
+          <span class="stat-icon">▦</span>
+        </div>
+        <strong id="totalToday">0</strong>
+        <small>En ambos cronogramas</small>
+      </div>
+
+      <div class="stat energy">
+        <div class="stat-title">
+          Energía eléctrica
+          <span class="stat-icon">ϟ</span>
+        </div>
+        <strong id="energyToday">0</strong>
+        <small>Actividades programadas</small>
+      </div>
+
+      <div class="stat video">
+        <div class="stat-title">
+          Videovigilancia
+          <span class="stat-icon">◉</span>
+        </div>
+        <strong id="videoToday">0</strong>
+        <small>Actividades programadas</small>
+      </div>
+
+      <div class="stat">
+        <div class="stat-title">
+          Próxima actividad
+          <span class="stat-icon">→</span>
+        </div>
+        <strong id="nextDate" style="font-size:17px">--</strong>
+        <small id="nextName">Consultando agenda</small>
+      </div>
+
+    </div>
+
+    <!-- ACTIVIDADES DEL DÍA -->
+
+    <div class="section-title">
+      <div>
+        <div class="eyebrow">PLANIFICACIÓN DIARIA</div>
+        <h3>¿Qué toca realizar hoy?</h3>
+      </div>
+      <span class="today-badge" id="activityCounter">HOY</span>
+    </div>
+
+    <div class="activities" id="todayActivities"></div>
+
+    <!-- PRÓXIMOS -->
+
+    <div class="section-title" style="margin-top:30px">
+      <div>
+        <div class="eyebrow">PLANIFICACIÓN FUTURA</div>
+        <h3>Próximos mantenimientos</h3>
+      </div>
+
+      <button onclick="showView('schedules')">
+        Ver cronogramas →
+      </button>
+    </div>
+
+    <div class="upcoming" id="upcomingList"></div>
+
+  </section>
+
+  <!-- CRONOGRAMAS -->
+
+  <section id="schedulesView" class="hidden">
+
+    <div class="schedule-intro">
+      <div>
+        <div class="eyebrow">PLANIFICACIÓN COMPLETA</div>
+        <h2>Cronogramas de mantenimiento</h2>
+        <p>Programación de energía eléctrica y sistemas de videovigilancia.</p>
+      </div>
+
+      <select id="filter">
+        <option value="todos">Todos los cronogramas</option>
+        <option value="energia">Energía eléctrica</option>
+        <option value="video">Videovigilancia</option>
+      </select>
+    </div>
+
+    <div id="scheduleTables"></div>
+
+  </section>
+
+  <footer>
+    Sistema de seguimiento de mantenimientos · Gerencia Regional La Paz y sus Administraciones de Aduana.
+    <br>
+    Los estados se calculan según las fechas programadas, no representan una confirmación de ejecución.
+  </footer>
+
+</main>
+</div>
+
+<script>
+
+/* =====================================
+   CONFIGURACIÓN DE CRONOGRAMAS
+===================================== */
+
+const TIMEZONE = "America/La_Paz";
+
+const schedules = {
+
+  energia: {
+    title: "CUARTO MANTENIMIENTO · SERVICIO ESPECIALIZADO EN INSTALACIÓN Y MANTENIMIENTO DE LOS SISTEMAS DE ENERGÍA ELÉCTRICA",
+    short: "Energía eléctrica",
+
+    items: [
+
+      ["01 Administración Aeropuerto El Alto","2026-11-10","2026-11-10"],
+
+      ["02 Gerencia Regional La Paz","2026-11-11","2026-11-11"],
+
+      ["03 Aduana Interior La Paz","2026-11-12","2026-11-12"],
+
+      ["04 Punto de Control Huarina","2026-11-13","2026-11-13"],
+
+      ["05 Adm. Aduana Zona Franca Industrial y Comercial Patacamaya","2026-11-16","2026-11-16"],
+
+      ["06 Adm. Aduana Zona Franca Comercial Frontera Cobija","2026-11-17","2026-11-17"],
+
+      ["07 Punto de Control Porvenir","2026-11-18","2026-11-18"],
+
+      ["08 Punto de Control Yata","2026-11-19","2026-11-19"],
+
+      ["09 Administración Aduana Frontera Guayaramerín","2026-11-20","2026-11-20"],
+
+      ["10 Punto de Control Botijlaca Carretera La Paz","2026-11-27","2026-11-27"],
+
+      ["11 Administración Aduana Frontera Charaña","2026-11-28","2026-11-28"],
+
+      ["12 Punto de Control Guauqui","2026-11-30","2026-11-30"],
+
+      ["13 Administración Aduana Frontera Desaguadero","2026-11-30","2026-12-01"]
+
+    ]
+  },
+
+  video: {
+    title: "QUINTO MANTENIMIENTO · SERVICIO ESPECIALIZADO DE MANTENIMIENTO PREVENTIVO Y CORRECTIVO DE LOS SISTEMAS DE VIDEO VIGILANCIA",
+    short: "Videovigilancia",
+
+    items: [
+
+      ["01 Aduana Interior La Paz","2026-11-11","2026-11-12"],
+
+      ["02 Punto de Control Huarina","2026-11-13","2026-11-13"],
+
+      ["03 Adm. Aduana Zona Franca Industrial y Comercial Patacamaya","2026-11-16","2026-11-16"],
+
+      ["04 Adm. Aduana Zona Franca Comercial Frontera Cobija","2026-11-17","2026-11-17"],
+
+      ["05 Punto de Control Porvenir","2026-11-18","2026-11-18"],
+
+      ["06 Punto de Control Yata","2026-11-19","2026-11-19"],
+
+      ["07 Administración Aduana Frontera Guayaramerín","2026-11-20","2026-11-20"],
+
+      ["08 Punto de Control Botijlaca Carretera La Paz","2026-11-27","2026-11-27"],
+
+      ["09 Administración Aduana Frontera Charaña","2026-11-28","2026-11-28"],
+
+      ["10 Punto de Control Guauqui","2026-11-30","2026-11-30"],
+
+      ["11 Administración Aduana Frontera Desaguadero","2026-11-30","2026-12-01"],
+
+      ["12 Agencia Exterior Matarani-Ilo [1]","2026-12-02","2026-12-02"]
+
+    ]
+  }
+
+};
+
+
+/* =====================================
+   FUNCIONES DE FECHAS
+===================================== */
+
+const $ = id => document.getElementById(id);
+
+const pad = n => String(n).padStart(2,"0");
+
+function getToday() {
+
+  const parts = new Intl.DateTimeFormat("en-CA",{
+    timeZone:TIMEZONE,
+    year:"numeric",
+    month:"2-digit",
+    day:"2-digit"
+  }).formatToParts(new Date());
+
+  const values = {};
+
+  parts.forEach(p => values[p.type] = p.value);
+
+  return `${values.year}-${values.month}-${values.day}`;
+}
+
+function parseDate(value) {
+
+  const [y,m,d] = value.split("-").map(Number);
+
+  return new Date(Date.UTC(y,m-1,d,12));
+}
+
+function dateKey(date) {
+
+  return `${date.getUTCFullYear()}-${pad(date.getUTCMonth()+1)}-${pad(date.getUTCDate())}`;
+}
+
+function formatDate(value) {
+
+  return new Intl.DateTimeFormat("es-BO",{
+    day:"2-digit",
+    month:"2-digit",
+    year:"numeric",
+    timeZone:"UTC"
+  }).format(parseDate(value));
+}
+
+function longDate(value) {
+
+  return new Intl.DateTimeFormat("es-BO",{
+    weekday:"long",
+    day:"numeric",
+    month:"long",
+    year:"numeric",
+    timeZone:"UTC"
+  }).format(parseDate(value));
+}
+
+function shortMonthDate(value) {
+
+  return new Intl.DateTimeFormat("es-BO",{
+    day:"2-digit",
+    month:"short",
+    timeZone:"UTC"
+  }).format(parseDate(value));
+}
+
+function getAllActivities() {
+
+  return Object.entries(schedules)
+    .flatMap(([type,group]) =>
+      group.items.map(([name,start,end]) => ({
+        type,
+        name,
+        start,
+        end,
+        group:group.short,
+        title:group.title
+      }))
+    )
+    .sort((a,b) =>
+      a.start.localeCompare(b.start) ||
+      a.type.localeCompare(b.type)
+    );
+}
+
+function activeOn(item,date) {
+
+  return item.start <= date && item.end >= date;
+}
+
+function capitalize(text) {
+
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+
+/* =====================================
+   RELOJ Y FECHA ACTUAL
+===================================== */
+
+function updateClock() {
+
+  $("clock").textContent =
+    new Intl.DateTimeFormat("es-BO",{
+      timeZone:TIMEZONE,
+      hour:"2-digit",
+      minute:"2-digit",
+      second:"2-digit",
+      hour12:false
+    }).format(new Date());
+
+}
+
+
+/* =====================================
+   CALENDARIO
+===================================== */
+
+const initialDate = parseDate(getToday());
+
+let calendarMonth = new Date(Date.UTC(
+  initialDate.getUTCFullYear(),
+  initialDate.getUTCMonth(),
+  1,
+  12
+));
+
+let selectedDate = getToday();
+
+function renderCalendar() {
+
+  const today = getToday();
+
+  const monthTitle = new Intl.DateTimeFormat("es-BO",{
+    month:"long",
+    year:"numeric",
+    timeZone:"UTC"
+  }).format(calendarMonth);
+
+  $("calendarMonth").textContent = capitalize(monthTitle);
+
+  const firstDay = new Date(Date.UTC(
+    calendarMonth.getUTCFullYear(),
+    calendarMonth.getUTCMonth(),
+    1,
+    12
+  ));
+
+  // La semana comienza en lunes.
+  const offset = (firstDay.getUTCDay()+6)%7;
+
+  const startDate = new Date(Date.UTC(
+    firstDay.getUTCFullYear(),
+    firstDay.getUTCMonth(),
+    1-offset,
+    12
+  ));
+
+  const activities = getAllActivities();
+
+  let html = "";
+
+  // Seis semanas para conservar una cuadrícula uniforme.
+  for(let i=0;i<42;i++) {
+
+    const current = new Date(startDate);
+
+    current.setUTCDate(startDate.getUTCDate()+i);
+
+    const key = dateKey(current);
+
+    const sameMonth =
+      current.getUTCMonth() === calendarMonth.getUTCMonth();
+
+    const events = activities.filter(x => activeOn(x,key));
+
+    const hasEnergy =
+      events.some(x => x.type === "energia");
+
+    const hasVideo =
+      events.some(x => x.type === "video");
+
+    let classes = "calendar-day";
+
+    if(!sameMonth) classes += " outside";
+    if(key === today) classes += " today";
+    if(key === selectedDate) classes += " selected";
+
+    let markers = "";
+
+    if(hasEnergy) markers += "<i></i>";
+    if(hasVideo) markers += '<i class="video"></i>';
+
+    html += `
+      <button
+        type="button"
+        class="${classes}"
+        data-date="${key}"
+        title="${longDate(key)}"
+      >
+
+        ${key===today?'<span class="today-mark"></span>':""}
+
+        <span class="day-number">${current.getUTCDate()}</span>
+
+        <span class="day-dots">${markers}</span>
+
+      </button>
+    `;
+
+  }
+
+  $("calendarGrid").innerHTML = html;
+
+  document.querySelectorAll(".calendar-day").forEach(button => {
+
+    button.addEventListener("click",() => {
+
+      selectedDate = button.dataset.date;
+
+      renderCalendar();
+
+    });
+
+  });
+
+  renderSelectedDate();
+
+}
+
+function renderSelectedDate() {
+
+  const activities = getAllActivities()
+    .filter(x => activeOn(x,selectedDate));
+
+  const heading = capitalize(longDate(selectedDate));
+
+  let html = `<h4>${heading}</h4>`;
+
+  if(activities.length === 0) {
+
+    html += `
+      <div class="selected-empty">
+        No hay mantenimientos programados para esta fecha.
+      </div>
+    `;
+
+  } else {
+
+    html += '<div class="selected-events">';
+
+    activities.forEach(item => {
+
+      const cls = item.type === "energia" ? "energy" : "video";
+
+      const label = item.type === "energia"
+        ? "⚡ Energía eléctrica"
+        : "◉ Videovigilancia";
+
+      html += `
+        <div class="selected-event ${cls}">
+          ${label} · ${item.name}
+        </div>
+      `;
+
+    });
+
+    html += "</div>";
+
+  }
+
+  $("selectedInfo").innerHTML = html;
+
+}
+
+// Navegación del calendario.
+
+$("prevMonth").addEventListener("click",() => {
+
+  calendarMonth.setUTCMonth(calendarMonth.getUTCMonth()-1);
+
+  renderCalendar();
+
+});
+
+$("nextMonth").addEventListener("click",() => {
+
+  calendarMonth.setUTCMonth(calendarMonth.getUTCMonth()+1);
+
+  renderCalendar();
+
+});
+
+$("todayMonth").addEventListener("click",() => {
+
+  const today = parseDate(getToday());
+
+  calendarMonth = new Date(Date.UTC(
+    today.getUTCFullYear(),
+    today.getUTCMonth(),
+    1,
+    12
+  ));
+
+  selectedDate = getToday();
+
+  renderCalendar();
+
+});
+
+
+/* =====================================
+   PANEL DEL DÍA
+===================================== */
+
+function renderDashboard() {
+
+  const today = getToday();
+
+  const all = getAllActivities();
+
+  const todayActivities = all.filter(x => activeOn(x,today));
+
+  const energy = todayActivities.filter(x => x.type==="energia");
+
+  const video = todayActivities.filter(x => x.type==="video");
+
+  $("todayShort").textContent = formatDate(today);
+
+  $("dateHeading").textContent =
+    new Intl.DateTimeFormat("es-BO",{
+      day:"numeric",
+      month:"long",
+      year:"numeric",
+      timeZone:"UTC"
+    }).format(parseDate(today));
+
+  $("weekday").textContent = capitalize(
+    new Intl.DateTimeFormat("es-BO",{
+      weekday:"long",
+      timeZone:"UTC"
+    }).format(parseDate(today))
+  );
+
+  $("totalToday").textContent = todayActivities.length;
+
+  $("energyToday").textContent = energy.length;
+
+  $("videoToday").textContent = video.length;
+
+  $("activityCounter").textContent =
+    `${todayActivities.length} ACTIVIDAD${todayActivities.length===1?"":"ES"}`;
+
+  // Próxima actividad.
+
+  const next = all
+    .filter(x => x.start > today)
+    .sort((a,b)=>a.start.localeCompare(b.start))[0];
+
+  $("nextDate").textContent = next
+    ? shortMonthDate(next.start)
+    : "—";
+
+  $("nextName").textContent = next
+    ? next.name.replace(/^\d+\s/,"")
+    : "Sin próximas actividades";
+
+  // Actividades de hoy.
+
+  let activityHTML = "";
+
+  if(todayActivities.length === 0) {
+
+    activityHTML = `
+      <div class="empty">
+        ✓<br><br>
+        No hay mantenimientos programados para hoy.
+        <br>
+        Consulta el calendario para revisar los próximos trabajos.
+      </div>
+    `;
+
+  } else {
+
+    todayActivities.forEach(item => {
+
+      const isEnergy = item.type==="energia";
+
+      const tag = isEnergy
+        ? "Energía eléctrica"
+        : "Videovigilancia";
+
+      const dates = item.start===item.end
+        ? formatDate(item.start)
+        : `${formatDate(item.start)} al ${formatDate(item.end)}`;
+
+      activityHTML += `
+
+        <article class="activity ${isEnergy?"":"video"}">
+
+          <h4>${item.name}</h4>
+
+          <span class="tag ${isEnergy?"energy":"video"}">
+            ${isEnergy?"⚡":"◉"} ${tag}
+          </span>
+
+          <p>
+            ${item.title}.
+          </p>
+
+          <div class="activity-footer">
+            <span>Fecha programada</span>
+            <strong>${dates}</strong>
+          </div>
+
+        </article>
+
+      `;
+
+    });
+
+  }
+
+  $("todayActivities").innerHTML = activityHTML;
+
+  // Próximas actividades agrupadas por fecha.
+
+  const upcoming = all
+    .filter(x => x.start > today)
+    .sort((a,b)=>a.start.localeCompare(b.start))
+    .slice(0,6);
+
+  $("upcomingList").innerHTML = upcoming.length
+    ? upcoming.map(item => `
+
+      <div class="upcoming-item">
+
+        <div class="upcoming-date">
+          ${shortMonthDate(item.start)}
+        </div>
+
+        <strong>${item.name}</strong>
+
+        <small>${item.group}</small>
+
+      </div>
+
+    `).join("")
+    : '<div class="empty">No hay próximas actividades.</div>';
+
+}
+
+
+/* =====================================
+   TABLAS DE CRONOGRAMAS
+===================================== */
+
+function getStatus(item,today) {
+
+  if(item.end < today) {
+
+    return '<span class="status">Fecha pasada</span>';
+
+  }
+
+  if(activeOn(item,today)) {
+
+    return '<span class="status today">Programado hoy</span>';
+
+  }
+
+  return '<span class="status">Próximo</span>';
+
+}
+
+function renderSchedules() {
+
+  const filter = $("filter").value;
+
+  const today = getToday();
+
+  const types = filter === "todos"
+    ? ["energia","video"]
+    : [filter];
+
+  let html = "";
+
+  types.forEach(type => {
+
+    const group = schedules[type];
+
+    const items = group.items;
+
+    html += `
+
+      <section class="schedule-block ${type==="video"?"video-block":""}">
+
+        <div class="schedule-heading">
+
+          <h3>${group.title}</h3>
+
+          <small>
+            ${items.length} puntos de mantenimiento
+          </small>
+
+        </div>
+
+        <div class="table-scroll">
+
+          <table>
+
+            <thead>
+              <tr>
+                <th>ADMINISTRACIÓN O PUNTO DE CONTROL</th>
+                <th>INICIO</th>
+                <th>FIN</th>
+                <th>ESTADO</th>
+              </tr>
+            </thead>
+
+            <tbody>
+
+              ${items.map(([name,start,end]) => `
+
+                <tr>
+
+                  <td>${name}</td>
+
+                  <td>${formatDate(start)}</td>
+
+                  <td>${formatDate(end)}</td>
+
+                  <td>${getStatus({start,end},today)}</td>
+
+                </tr>
+
+              `).join("")}
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </section>
+
+    `;
+
+  });
+
+  $("scheduleTables").innerHTML = html;
+
+}
+
+
+/* =====================================
+   NAVEGACIÓN
+===================================== */
+
+function showView(view) {
+
+  const home = view==="home";
+
+  $("homeView").classList.toggle("hidden",!home);
+
+  $("schedulesView").classList.toggle("hidden",home);
+
+  $("pageTitle").textContent = home
+    ? "Panel de mantenimientos"
+    : "Cronogramas de mantenimiento";
+
+  document.querySelectorAll(".nav-btn").forEach(button => {
+
+    button.classList.toggle(
+      "active",
+      button.dataset.view===view
+    );
+
+  });
+
+  if(!home) renderSchedules();
+
+}
+
+document.querySelectorAll(".nav-btn").forEach(button => {
+
+  button.addEventListener("click",() => {
+
+    showView(button.dataset.view);
+
+  });
+
+});
+
+$("filter").addEventListener("change",renderSchedules);
+
+
+/* =====================================
+   INICIALIZACIÓN Y ACTUALIZACIÓN
+===================================== */
+
+function refresh() {
+
+  updateClock();
+
+  renderDashboard();
+
+  renderCalendar();
+
+  if(!$("schedulesView").classList.contains("hidden")) {
+
+    renderSchedules();
+
+  }
+
+}
+
+refresh();
+
+// Actualiza la hora y comprueba la fecha cada 30 segundos.
+
+setInterval(refresh,30000);
+
+</script>
+
+</body>
+</html>
